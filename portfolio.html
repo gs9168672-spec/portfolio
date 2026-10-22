@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gagandeep's Sketchbook</title>
+    
+    <!-- Bringing in the handwritten vibes! Thanks Google Fonts. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+
+    <style>
+        /* 
+         * ~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+         * WARNING: Messy desk ahead! 
+         * Making things look beautifully imperfect on purpose.
+         * (If my old CS professor sees this CSS, I'm done for)
+         * ~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+         */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            /* Ink and paper colors - Daylight mode */
+            --bg-paper: #fdfbf7; /* Slightly aged paper */
+            --ink-main: #2c3e50; /* Dark blueish-charcoal pen */
+            --ink-light: #b0bec5; /* Faint grid dots */
+            --highlighter-yellow: rgba(255, 235, 59, 0.5);
+            --highlighter-pink: rgba(255, 182, 193, 0.6);
+            --highlighter-blue: rgba(173, 216, 230, 0.6);
+            --tape: rgba(255, 255, 255, 0.6);
+            
+            /* The magic sketchy border trick. Do not touch. It's fragile. */
+            --sketch-border: 255px 15px 225px 15px/15px 225px 15px 255px;
+            --sketch-border-alt: 15px 225px 15px 255px/255px 15px 225px 15px;
+        }
+
+        /* Dark mode is now "Chalkboard Mode" */
+        body.chalkboard {
+            --bg-paper: #222f3e;
+            --ink-main: #fdfbf7; /* White chalk */
+            --ink-light: #4a5c6f; /* Darker board dust */
+            --highlighter-yellow: rgba(255, 211, 42, 0.4);
+            --tape: rgba(200, 200, 200, 0.2);
+        }
+
+        body {
+            font-family: 'Patrick Hand', cursive; /* Looks like my actual handwriting, but legible */
+            background-color: var(--bg-paper);
+            /* Dot grid pattern for that bullet journal feel */
+            background-image: radial-gradient(var(--ink-light) 1px, transparent 1px);
+            background-size: 25px 25px;
+            color: var(--ink-main);
+            font-size: 22px;
+            line-height: 1.6;
+            transition: background-color 0.4s, color 0.4s;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Caveat', cursive;
+            font-weight: 700;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* The 'Highlight' effect */
+        .highlight {
+            background-color: var(--highlighter-yellow);
+            padding: 2px 8px;
+            border-radius: 3px;
+            /* Slight rotation to look hand-swiped */
+            display: inline-block;
+            transform: rotate(-2deg);
+        }
+        
+        .highlight.pink { background-color: var(--highlighter-pink); transform: rotate(1deg); }
+        .highlight.blue { background-color: var(--highlighter-blue); transform: rotate(-1deg); }
+
+        /* The core sketch box style */
+        .sketch-box {
+            background: var(--bg-paper);
+            border: 2px solid var(--ink-main);
+            border-radius: var(--sketch-border);
+            /* Harsh, solid drop shadow for a retro/zine vibe */
+            box-shadow: 6px 6px 0px var(--ink-main);
+            transition: all 0.2s ease-in-out;
+            position: relative;
+        }
+
+        /* Adding hover bounce because we like fun things */
+        .sketch-box:hover {
+            transform: translate(-3px, -3px) rotate(1deg);
+            box-shadow: 10px 10px 0px var(--ink-main);
+        }
+
+        /* NAVIGATION - Taped to the top of the page */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-paper);
+            border-bottom: 3px solid var(--ink-main);
+            /* Wobbly bottom edge */
+            border-radius: 0 0 15px 255px/0 0 255px 15px;
+            box-shadow: 0 5px 0px var(--ink-main);
+            /* Hide the grid on the header so it doesn't clash */
+            background-image: none; 
+        }
+
+        nav {
+            max-width: 1150px;
+            margin: auto;
+            padding: 15px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 38px;
+            transform: rotate(-3deg); /* Slightly crooked on purpose */
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            font-size: 24px;
+            position: relative;
+            padding: 5px;
+        }
+
+        /* Scribble underline on hover */
+        .nav-links a:hover::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            bottom: 2px;
+            left: 0;
+            background: var(--ink-main);
+            border-radius: var(--sketch-border);
+            transform: rotate(-2deg);
+        }
+
+        .menu-btn, .theme-btn {
+            border: 2px solid var(--ink-main);
+            border-radius: var(--sketch-border);
+            background: var(--bg-paper);
+            color: var(--ink-main);
+            font-size: 24px;
+            padding: 5px 12px;
+            cursor: pointer;
+            box-shadow: 3px 3px 0 var(--ink-main);
+            font-family: 'Patrick Hand', cursive;
+            transition: all 0.1s;
+        }
+        
+        .theme-btn:active, .menu-btn:active {
+            transform: translate(3px, 3px);
+            box-shadow: 0px 0px 0 var(--ink-main);
+        }
+
+        .menu-btn {
+            display: none;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            max-width: 1150px;
+            min-height: 85vh;
+            margin: auto;
+            padding: 90px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .intro {
+            font-size: 28px;
+            transform: rotate(-2deg);
+            display: inline-block;
+            margin-bottom: -5px;
+        }
+
+        .hero h1 {
+            font-size: clamp(50px, 8vw, 90px);
+            line-height: 1;
+            margin: 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            /* Make the text look a bit heavier */
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.1); 
+        }
+
+        .hero h2 {
+            font-size: 38px;
+            margin-bottom: 25px;
+        }
+
+        .hero p.description {
+            font-size: 24px;
+            max-width: 550px;
+            margin-bottom: 35px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 28px;
+            font-size: 24px;
+            text-align: center;
+            color: var(--bg-paper);
+            background: var(--ink-main);
+            border: 2px solid var(--ink-main);
+            border-radius: var(--sketch-border);
+            cursor: pointer;
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.2); 
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .btn:hover {
+            transform: translate(-3px, -3px) rotate(-2deg);
+            box-shadow: 9px 9px 0 rgba(0,0,0,0.2);
+        }
+
+        .btn-outline {
+            color: var(--ink-main);
+            background: var(--bg-paper);
+            box-shadow: 6px 6px 0 var(--ink-main);
+        }
+        
+        .btn-outline:hover {
+            box-shadow: 9px 9px 0 var(--ink-main);
+        }
+
+        /* Making the profile pic look like a taped-in polaroid */
+        .profile-container {
+            position: relative;
+            transform: rotate(3deg);
+            transition: transform 0.3s;
+        }
+        
+        .profile-container:hover {
+            transform: rotate(-1deg) scale(1.02);
+        }
+
+        /* Virtual masking tape! */
+        .tape {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-4deg);
+            width: 130px;
+            height: 35px;
+            background-color: var(--tape);
+            border: 1px solid var(--ink-light);
+            z-index: 10;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            /* Jagged edges for torn tape effect */
+            clip-path: polygon(0 5%, 5% 0, 95% 5%, 100% 0, 95% 95%, 100% 100%, 5% 95%, 0 100%);
+            backdrop-filter: blur(2px);
+        }
+
+        .profile {
+            width: 300px;
+            height: 300px;
+            background: var(--bg-paper);
+            padding: 10px 10px 40px 10px; /* Polaroid bottom heavy padding */
+            border: 2px solid var(--ink-main);
+            border-radius: 2px; /* Keep this blocky */
+            box-shadow: 8px 8px 0px var(--ink-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            object-fit: cover;
+            object-position: center 25%;
+        }
+
+        /* Doodled caption under polaroid */
+        .polaroid-caption {
+            position: absolute;
+            bottom: 5px;
+            width: 100%;
+            text-align: center;
+            font-family: 'Caveat', cursive;
+            font-size: 22px;
+            color: var(--ink-main);
+        }
+
+        /* COMMON SECTIONS */
+        .section {
+            max-width: 1150px;
+            margin: auto;
+            padding: 90px 24px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 55px;
+            margin-bottom: 55px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* A little scribble under section titles */
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 110%;
+            height: 6px;
+            bottom: 5px;
+            left: -5%;
+            background: var(--ink-main);
+            border-radius: var(--sketch-border);
+            transform: rotate(-1deg);
+        }
+
+        /* ABOUT */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 40px;
+        }
+
+        .about-box {
+            padding: 35px;
+        }
+
+        .about-box h3 {
+            margin-bottom: 15px;
+            font-size: 35px;
+            text-decoration: underline;
+            text-decoration-style: wavy;
+        }
+
+        .about-box p {
+            margin-bottom: 15px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 25px 15px;
+            /* Randomize rotations slightly */
+        }
+        
+        .stat:nth-child(odd) { border-radius: var(--sketch-border-alt); transform: rotate(1deg); }
+        .stat:nth-child(even) { transform: rotate(-1deg); }
+
+        .stat h3 {
+            font-size: 45px;
+            margin-bottom: -10px;
+        }
+
+        /* SKILLS */
+        .skills-section {
+            max-width: none;
+            /* Slightly different paper bg for contrast */
+            background-color: rgba(0,0,0,0.03); 
+            border-top: 2px dashed var(--ink-main);
+            border-bottom: 2px dashed var(--ink-main);
+        }
+        
+        body.chalkboard .skills-section { background-color: rgba(255,255,255,0.03); }
+
+        .skills-inner {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .skill-card {
+            padding: 30px 15px;
+            text-align: center;
+        }
+        
+        .skill-card:nth-child(1) { transform: rotate(-2deg); }
+        .skill-card:nth-child(2) { transform: rotate(1deg); border-radius: var(--sketch-border-alt); }
+        .skill-card:nth-child(3) { transform: rotate(-1deg); }
+        .skill-card:nth-child(4) { transform: rotate(2deg); border-radius: var(--sketch-border-alt); }
+
+        .skill-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .skill-card h3 {
+            font-size: 28px;
+            margin: 10px 0;
+        }
+
+        /* PROJECTS */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .project-card {
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-image {
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 70px;
+            border-bottom: 2px solid var(--ink-main);
+            /* A doodle pattern background instead of a gradient */
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.05) 10px, rgba(0,0,0,0.05) 20px);
+        }
+        body.chalkboard .project-image {
+             background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px);
+        }
+
+        .project-info {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-info h3 {
+            font-size: 30px;
+        }
+
+        .project-info p {
+            margin: 10px 0 20px;
+            flex-grow: 1;
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .tags span {
+            padding: 2px 10px;
+            border: 1px solid var(--ink-main);
+            border-radius: var(--sketch-border);
+            font-size: 18px;
+            /* Highlighter look for tags */
+            background-color: var(--highlighter-pink);
+        }
+        .project-card:nth-child(2) .tags span { background-color: var(--highlighter-blue); }
+        .project-card:nth-child(3) .tags span { background-color: var(--highlighter-yellow); }
+
+        .project-link {
+            font-family: 'Caveat', cursive;
+            font-size: 24px;
+            font-weight: bold;
+            display: inline-block;
+            border-bottom: 2px solid var(--ink-main);
+            align-self: flex-start;
+        }
+        
+        .project-link:hover {
+            color: #d35400; /* Orange ink on hover */
+            border-color: #d35400;
+        }
+
+        /* CONTACT */
+        .contact-section {
+            text-align: center;
+        }
+
+        .contact-description {
+            font-size: 26px;
+            margin: -25px 0 40px;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            /* Put the form in a giant sketch box */
+            padding: 40px;
+            background: var(--bg-paper);
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 15px;
+            width: 100%;
+            color: var(--ink-main);
+            background: transparent;
+            border: 2px solid var(--ink-main);
+            border-radius: var(--sketch-border-alt);
+            outline: none;
+            font-size: 20px;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+        }
+
+        /* Squiggly line focus state */
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            box-shadow: 5px 5px 0px var(--ink-main);
+            transform: translate(-2px, -2px);
+            background-color: rgba(255,255,255,0.5);
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 3px solid var(--ink-main);
+            border-radius: 255px 15px 0 0/15px 255px 0 0;
+            background-image: none;
+        }
+
+        footer a {
+            font-weight: bold;
+            text-decoration: underline;
+            text-decoration-style: wavy;
+        }
+
+        /* Doodles! Purely decorative absolute elements */
+        .doodle {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.7;
+            font-family: 'Caveat', cursive;
+        }
+        .doodle-1 { top: 20%; right: 5%; font-size: 40px; transform: rotate(15deg); }
+        .doodle-2 { bottom: 10%; left: -20px; font-size: 50px; transform: rotate(-20deg); }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 850px) {
+            .menu-btn {
+                display: block;
+                margin-left: auto;
+                margin-right: 15px;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                padding: 20px;
+                background: var(--bg-paper);
+                flex-direction: column;
+                align-items: center;
+                border-bottom: 3px solid var(--ink-main);
+                border-radius: 0 0 15px 15px;
+                box-shadow: 0 5px 0px var(--ink-main);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hero {
+                flex-direction: column-reverse;
+                text-align: center;
+                padding-top: 40px;
+            }
+
+            .hero p.description {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .buttons {
+                justify-content: center;
+            }
+
+            .profile-container {
+                margin-bottom: 20px;
+            }
+            .profile {
+                width: 250px;
+                height: 250px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 550px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 50px;
+            }
+
+            .hero h2 {
+                font-size: 28px;
+            }
+
+            .section-title {
+                font-size: 45px;
+            }
+
+            .section {
+                padding: 70px 18px;
+            }
+
+            nav {
+                padding: 15px;
+            }
+            
+            .contact-form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 
+      Welcome to my source code! 
+      It's a bit messy in here, like my actual desk. 
+      Please excuse the random CSS hacks. 
+    -->
+
+    <!-- NAVIGATION BAR -->
+    <header>
+        <nav>
+            <a href="#home" class="logo">Portfolio<span>.</span></a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+
+            <button class="menu-btn" id="menuBtn"
+                    aria-label="Toggle menu" aria-expanded="false">☰</button>
+
+            <!-- Changed to Chalkboard mode toggle -->
+            <button class="theme-btn sketch-box" id="themeBtn"
+                    aria-label="Toggle theme">🌑</button>
+        </nav>
+    </header>
+
+    <!-- HOME -->
+    <section class="hero" id="home" style="position: relative;">
+        <!-- Random desk doodle -->
+        <div class="doodle doodle-1">☕ Need more coffee</div>
+
+        <div class="hero-content">
+            <p class="intro">HELLO, I'M</p>
+
+            <h1>GAGANDEEP SINGH </h1>
+
+            <!-- Used the new highlighter class here -->
+            <h2>I'm a <span class="highlight">Web Developer</span></h2>
+
+            <p class="description">
+                I build modern, responsive and beautiful websites.
+                I enjoy turning creative ideas into real digital
+                experiences using HTML, CSS and JavaScript.
+                (And making things look like they were drawn by hand!)
+            </p>
+
+            <div class="buttons">
+                <a href="#projects" class="btn">View My Work</a>
+                <a href="#contact" class="btn btn-outline">Contact Me</a>
+            </div>
+        </div>
+
+        <div class="profile-container">
+            <div class="tape"></div>
+            <!-- Updated Image Source -->
+            <img class="profile" src="image_126508.jpg" alt="Gagandeep Singh profile photo">
+            <div class="polaroid-caption">Me! ✨</div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+        <h2 class="section-title">About <span class="highlight pink">Me</span></h2>
+
+        <div class="about-content">
+            <div class="about-box sketch-box">
+                <h3>Who Am I?</h3>
+
+                <p>
+                    I am a passionate web developer interested in creating
+                    attractive and user-friendly websites. 
+                </p>
+
+                <p>
+                    I enjoy learning new technologies, solving problems
+                    and developing projects that provide a great user
+                    experience. My brain is basically 90% code logic and 10% pizza.
+                </p>
+
+                <p>
+                    I am continuously improving my skills and looking
+                    for opportunities to work on exciting projects.
+                </p>
+            </div>
+
+            <!-- Stats looking like sticky notes! -->
+            <div class="stats">
+                <div class="stat sketch-box">
+                    <h3>10+</h3>
+                    <p>Projects to Build</p>
+                </div>
+
+                <div class="stat sketch-box">
+                    <h3>3+</h3>
+                    <p>Technologies</p>
+                </div>
+
+                <div class="stat sketch-box">
+                    <h3>100%</h3>
+                    <p>Dedication</p>
+                </div>
+
+                <div class="stat sketch-box">
+                    <h3>24/7</h3>
+                    <p>Learning Mindset</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="section skills-section" id="skills" style="position: relative;">
+        <!-- Another doodle! -->
+        <div class="doodle doodle-2">{"Code": "Works on my machine"}</div>
+
+        <div class="skills-inner">
+            <h2 class="section-title">
+                My <span class="highlight blue">Skills</span>
+            </h2>
+
+            <div class="skills-grid">
+                <div class="skill-card sketch-box">
+                    <div class="skill-icon">🌐</div>
+                    <h3>HTML5</h3>
+                    <p>Building website structure</p>
+                </div>
+
+                <div class="skill-card sketch-box">
+                    <div class="skill-icon">🎨</div>
+                    <h3>CSS3</h3>
+                    <p>Styling responsive layouts</p>
+                </div>
+
+                <div class="skill-card sketch-box">
+                    <div class="skill-icon">⚡</div>
+                    <h3>JavaScript</h3>
+                    <p>Creating interactive websites</p>
+                </div>
+
+                <div class="skill-card sketch-box">
+                    <div class="skill-icon">📱</div>
+                    <h3>Responsive Design</h3>
+                    <p>Supporting mobile and desktop</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section" id="projects">
+        <h2 class="section-title">
+            My <span class="highlight">Projects</span>
+        </h2>
+
+        <div class="projects-grid">
+
+            <div class="project-card sketch-box">
+                <div class="project-image">🛒</div>
+
+                <div class="project-info">
+                    <h3>E-Commerce Website</h3>
+
+                    <p>
+                        An online shopping website design with product
+                        sections and a modern user interface.
+                    </p>
+
+                    <div class="tags">
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>JS</span>
+                    </div>
+
+                    <a href="#contact" class="project-link">
+                        Discuss Project →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card sketch-box">
+                <div class="project-image">🌦️</div>
+
+                <div class="project-info">
+                    <h3>Weather App</h3>
+
+                    <p>
+                        A weather application concept for displaying
+                        weather information from an API.
+                    </p>
+
+                    <div class="tags">
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>API</span>
+                    </div>
+
+                    <a href="#contact" class="project-link">
+                        Discuss Project →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card sketch-box">
+                <div class="project-image">📝</div>
+
+                <div class="project-info">
+                    <h3>To-Do List</h3>
+
+                    <p>
+                        A task management interface for organizing
+                        daily activities. (So I stop forgetting things!)
+                    </p>
+
+                    <div class="tags">
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>JS</span>
+                    </div>
+
+                    <a href="#contact" class="project-link">
+                        Discuss Project →
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section contact-section" id="contact">
+        <h2 class="section-title">
+            Contact <span class="highlight pink">Me</span>
+        </h2>
+
+        <p class="contact-description">
+            Have a project in mind? Let's connect!
+        </p>
+
+        <form class="contact-form sketch-box" id="contactForm">
+            <!-- A little tape on the form to hold it down -->
+            <div class="tape" style="width: 80px; top: -10px;"></div>
+
+            <input type="text" id="name"
+                   placeholder="Your Name (Who are you?)" required>
+
+            <input type="email" id="email"
+                   placeholder="Your Email (No spam, promise)" required>
+
+            <textarea id="message" rows="5"
+                      placeholder="Scribble your message here..."
+                      required></textarea>
+
+            <button type="submit" class="btn">Send via Carrier Pigeon 🕊️</button>
+
+            <p id="form-status" style="font-weight: bold; margin-top: 10px;" role="status"></p>
+        </form>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>
+            © <span id="year"></span> Gagandeep Singh.
+            Hand-coded with ☕ & 🍕.
+        </p>
+        <p style="margin-top: 10px;">
+            <a href="#home">Back to Top ↑</a>
+        </p>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        /*
+         *  JS TIME! 
+         *  (Please don't break, please don't break...)
+         */
+
+        // MOBILE MENU LOGIC
+        const menuBtn = document.getElementById("menuBtn");
+        const navLinks = document.getElementById("navLinks");
+
+        menuBtn.addEventListener("click", function () {
+            const isOpen = navLinks.classList.toggle("active");
+            // Change the hamburger icon to an X
+            menuBtn.textContent = isOpen ? "✕" : "☰";
+            menuBtn.setAttribute("aria-expanded", String(isOpen));
+        });
+
+        // CLOSE MENU AFTER CLICKING A LINK (Because nobody likes a sticky menu blocking the view)
+        document.querySelectorAll(".nav-links a").forEach(function (link) {
+            link.addEventListener("click", function () {
+                navLinks.classList.remove("active");
+                menuBtn.textContent = "☰";
+                menuBtn.setAttribute("aria-expanded", "false");
+            });
+        });
+
+        // CHALKBOARD (DARK) / PAPER (LIGHT) THEME LOGIC
+        const themeBtn = document.getElementById("themeBtn");
+
+        function setTheme(theme) {
+            document.body.classList.toggle("chalkboard", theme === "chalkboard");
+            themeBtn.textContent = theme === "chalkboard" ? "💡" : "🌑";
+            localStorage.setItem("sketchbook-theme", theme);
+        }
+
+        themeBtn.addEventListener("click", function () {
+            const isChalkboard = document.body.classList.contains("chalkboard");
+            setTheme(isChalkboard ? "paper" : "chalkboard");
+        });
+
+        // LOAD SAVED THEME ON REFRESH
+        const savedTheme = localStorage.getItem("sketchbook-theme");
+        if (savedTheme === "paper" || savedTheme === "chalkboard") {
+            setTheme(savedTheme);
+        }
+
+        // AUTOMATIC COPYRIGHT YEAR (So I never have to update this manually again)
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        // CONTACT FORM MAILTO LAUNCHER
+        document.getElementById("contactForm")
+            .addEventListener("submit", function (event) {
+
+                // Prevent the page from yeeting itself into the void
+                event.preventDefault();
+
+                const name = document.getElementById("name").value.trim();
+                const email = document.getElementById("email").value.trim();
+                const message = document.getElementById("message").value.trim();
+                const status = document.getElementById("form-status");
+
+                if (!name || !email || !message) {
+                    status.textContent = "Uh oh! Did you forget to fill something out?";
+                    return;
+                }
+
+                // CHANGE THIS TO YOUR EMAIL ADDRESS
+                const recipient = "your-email@example.com";
+
+                const subject = encodeURIComponent(
+                    "Portfolio Contact from " + name
+                );
+
+                const body = encodeURIComponent(
+                    "Name: " + name + "\n" +
+                    "Email: " + email + "\n\n" +
+                    "Message:\n" + message
+                );
+
+                status.textContent = "Opening your email app... hold tight!";
+
+                window.location.href =
+                    "mailto:" + recipient +
+                    "?subject=" + subject +
+                    "&body=" + body;
+            });
+    </script>
+
+</body>
+</html>
